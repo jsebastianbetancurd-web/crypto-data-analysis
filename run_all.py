@@ -45,33 +45,56 @@ def run_pipeline():
     print("\n[2/5] Data Sample (Last 5 days):")
     print(df.tail())
 
-    # 3. Price History Plot
-    print(f"\n[3/5] Generating price history plot -> {OUTPUT_DIR}/price_history.png")
+    # 3. Price History Plot with Moving Averages
+    print(f"\n[3/6] Generating price history (with SMA 50/200) -> {OUTPUT_DIR}/price_history.png")
     fig, ax = plt.subplots(figsize=(12, 6))
-    df.plot(ax=ax, title=f"{SYMBOL} Historical Daily Close Price", color='orange')
+    df.plot(ax=ax, label='Close Price', color='orange', alpha=0.6)
+    
+    # Calculate Moving Averages
+    sma50 = df.rolling(window=50).mean()
+    sma200 = df.rolling(window=200).mean()
+    sma50.plot(ax=ax, label='SMA 50', color='blue', linestyle='--', alpha=0.8)
+    sma200.plot(ax=ax, label='SMA 200', color='red', linestyle='-', linewidth=2)
+    
+    ax.set_title(f"{SYMBOL} Historical Price & Moving Averages")
     ax.set_ylabel("Price (USDT)")
+    ax.legend()
     ax.grid(True, alpha=0.3)
     fig.savefig(OUTPUT_DIR / "price_history.png", dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print("      ✅ Plot saved.")
+    print("      ✅ Price history plot saved.")
 
-    # 4. Returns Analysis
-    print("\n[4/5] Calculating daily returns volatility...")
+    # 4. Returns & Volatility Analysis
+    print("\n[4/6] Calculating returns and rolling volatility...")
     returns = df.pct_change().dropna()
+    cumulative_returns = (1 + returns).cumprod() - 1
+    rolling_vol = returns.rolling(window=30).std() * (252**0.5) # Annualized 30-day rolling vol
+    
     print("      Statistics for Daily Returns:")
     print(returns.describe())
 
-    # 5. Returns Histogram
-    print(f"\n[5/5] Generating returns distribution plot -> {OUTPUT_DIR}/returns_histogram.png")
-    fig, ax = plt.subplots(figsize=(10, 6))
-    returns.hist(bins=100, ax=ax, color='skyblue', edgecolor='black', alpha=0.7)
-    ax.set_title(f"{SYMBOL} Daily Close Returns Distribution")
-    ax.set_xlabel("Daily Return")
-    ax.set_ylabel("Frequency")
+    # 5. Cumulative Returns Plot
+    print(f"\n[5/6] Generating cumulative returns plot -> {OUTPUT_DIR}/cumulative_returns.png")
+    fig, ax = plt.subplots(figsize=(12, 6))
+    cumulative_returns.plot(ax=ax, color='green', linewidth=2)
+    ax.set_title(f"{SYMBOL} Cumulative Investment Returns")
+    ax.set_ylabel("Cumulative Return (%)")
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, p: f'{x*100:.0f}%'))
     ax.grid(True, alpha=0.3)
-    fig.savefig(OUTPUT_DIR / "returns_histogram.png", dpi=150, bbox_inches='tight')
+    fig.savefig(OUTPUT_DIR / "cumulative_returns.png", dpi=150, bbox_inches='tight')
     plt.close(fig)
-    print("      ✅ Plot saved.")
+    print("      ✅ Cumulative returns plot saved.")
+
+    # 6. Rolling Volatility Plot
+    print(f"\n[6/6] Generating rolling volatility plot -> {OUTPUT_DIR}/rolling_volatility.png")
+    fig, ax = plt.subplots(figsize=(12, 6))
+    rolling_vol.plot(ax=ax, color='purple', linewidth=1.5)
+    ax.set_title(f"{SYMBOL} 30-Day Rolling Annualized Volatility")
+    ax.set_ylabel("Volatility")
+    ax.grid(True, alpha=0.3)
+    fig.savefig(OUTPUT_DIR / "rolling_volatility.png", dpi=150, bbox_inches='tight')
+    plt.close(fig)
+    print("      ✅ Rolling volatility plot saved.")
 
     print("\n" + "=" * 60)
     print("  ✨ PIPELINE COMPLETED SUCCESSFULLY")

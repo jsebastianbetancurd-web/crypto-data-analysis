@@ -47,14 +47,25 @@ jupyter lab Crypto_Analysis.ipynb
 ## Features
 - **Modern API Integration**: Uses Binance v3 API for high-quality OHLCV data.
 - **Mock Data Engine**: Built-in random walk generator for synthetic price data.
-- **Volatility Analysis**: Automatic calculation of daily returns, descriptive statistics (mean, std, min, max), and "fat-tail" distribution visualization.
+- **Advanced Financial Analytics**: 
+    - Trend analysis using Moving Averages (SMA 50/200).
+    - Investment performance tracking via Cumulative Returns.
+    - Risk assessment with Rolling Annualized Volatility.
 - **Production-Ready**: Includes a CLI-ready script (`run_all.py`) and a non-interactive matplotlib backend for headless environments.
+
+## Expected Outputs
+
+When you run the pipeline, the following visualizations will be generated in the `output/` directory:
+1. **`price_history.png`**: Historical closing price with 50-day and 200-day Simple Moving Averages (SMA).
+2. **`cumulative_returns.png`**: The growth of a $1 investment over the period.
+3. **`rolling_volatility.png`**: 30-day rolling annualized volatility to track risk changes.
+4. **`returns_histogram.png`**: Statistical distribution of daily returns.
 
 ## Project Structure
 - `run_all.py`: Main orchestrator and entry point.
 - `crypto_data.py`: API and Mock data utility module.
 - `Crypto_Analysis.ipynb`: Interactive research notebook.
-- `output/`: Directory where generated plots (`price_history.png`, `returns_histogram.png`) are saved.
+- `output/`: Directory where generated plots are saved.
 - `test_analysis.py`: End-to-end unit test suite.
 
 ---
