@@ -52,14 +52,23 @@ jupyter lab Crypto_Analysis.ipynb
     - Investment performance tracking via Cumulative Returns.
     - Risk assessment with Rolling Annualized Volatility.
 - **Production-Ready**: Includes a CLI-ready script (`run_all.py`) and a non-interactive matplotlib backend for headless environments.
-
 ## Expected Outputs
 
-When you run the pipeline, the following visualizations will be generated in the `output/` directory:
-1. **`price_history.png`**: Historical closing price with 50-day and 200-day Simple Moving Averages (SMA).
-2. **`cumulative_returns.png`**: The growth of a $1 investment over the period.
-3. **`rolling_volatility.png`**: 30-day rolling annualized volatility to track risk changes.
-4. **`returns_histogram.png`**: Statistical distribution of daily returns.
+When you run the pipeline, the following visualizations will be generated and can be viewed in the `assets/` directory:
+
+### 1. Price History & SMA
+![Price History](assets/price_history.png)
+
+### 2. Cumulative Returns
+![Cumulative Returns](assets/cumulative_returns.png)
+
+### 3. Rolling Volatility
+![Rolling Volatility](assets/rolling_volatility.png)
+
+### 4. Returns Distribution
+![Returns Histogram](assets/returns_histogram.png)
+
+## Features
 
 ## Project Structure
 - `run_all.py`: Main orchestrator and entry point.
